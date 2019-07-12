@@ -1,0 +1,30 @@
+{
+  "name": "dgcard",
+  "version": "0.0.1",
+  "description": "API to create JSON represetation for your dgcard",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/venikman/dgcard.git"
+  },
+  "keywords": [
+    "API",
+    "digicard"
+  ],
+  "author": "venikman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/venikman/dgcard/issues"
+  },
+  "homepage": "https://github.com/venikman/dgcard#readme",
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "prettier": "1.18.2"
+  },
+  "dependencies": {
+    "@hapi/joi": "^15.1.0"
+  }
+}
