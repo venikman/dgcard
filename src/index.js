@@ -28,18 +28,22 @@ function dgcard(option) {
                     .required()
                     .min(2)
                     .max(30),
+                username: joi
+                    .string()
+                    .required()
+                    .regex(
+                        /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,29}$/i, //github validation regex
+                        'username'
+                    ),
                 work: str
                     .required()
                     .min(3)
                     .max(80),
-                username: str
-                    .optional()
-                    .min(2)
-                    .max(40),
                 twitter: socialUrl,
+                github: socialUrl,
                 linkedin: socialUrl,
                 web: socialUrl,
-                email: str.require().email()
+                email: str.optional().email()
             })
     );
 

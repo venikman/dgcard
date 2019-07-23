@@ -1,11 +1,11 @@
-const dgcard = require('./index');
+const dgcard = require('../src/index');
 
 test('returns object with minimum fields', () => {
     const options = {
         firstName: 'Stas',
         lastName: 'Nedbailov',
         work: 'developer',
-        handle: 'venikman'
+        username: 'venikman'
     };
     expect(dgcard(options)).toEqual(options);
 });
@@ -14,10 +14,11 @@ test('returns object with maximum fields', () => {
     const options = {
         firstName: 'Stas',
         lastName: 'Nedbailov',
+        username: 'venikman',
         work: 'developer',
-        handle: 'venikman',
         twitter: 'https://twitter.com/venik_man',
         web: 'https://venikman.com',
+        github: 'https://github.com/venikman',
         linkedin: 'https://www.linkedin.com/in/stanislau-niadbailau-51b012123/',
         email: 'nedbailov@gmail.com'
     };
