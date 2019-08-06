@@ -1,6 +1,6 @@
 {
     "name": "dgcard",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "API to create JSON represetation for your dgcard",
     "bin": "src/cli.js",
     "scripts": {
