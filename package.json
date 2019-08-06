@@ -2,7 +2,7 @@
     "name": "dgcard",
     "version": "0.0.1",
     "description": "API to create JSON represetation for your dgcard",
-    "main": "src/index.js",
+    "bin": "src/cli.js",
     "scripts": {
         "test": "jest --watchAll"
     },
