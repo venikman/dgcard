@@ -4,10 +4,14 @@ const boxen = require('boxen');
 const chalk = require('chalk');
 const parser = require('./dgcard-creator').create;
 
-console.log(dgcard());
+dgcard().then(data => {
+    console.log(data);
+    // return;
+});
 
-function dgcard() {
-    const args = parser(process.argv);
+async function dgcard() {
+    // const args = await Promise.resolve(1);
+    const args = await parser(process.argv);
     const options = {
         padding: 1,
         margin: 1,
