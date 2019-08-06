@@ -1,6 +1,6 @@
 {
     "name": "dgcard",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "API to create JSON represetation for your dgcard",
     "bin": "src/cli.js",
     "scripts": {
@@ -28,6 +28,7 @@
         "@hapi/joi": "^15.1.0",
         "boxen": "^4.1.0",
         "chalk": "^2.4.2",
-        "execa": "^2.0.3"
+        "execa": "^2.0.3",
+        "yargs-parser": "^13.1.1"
     }
 }
