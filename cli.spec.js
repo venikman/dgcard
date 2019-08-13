@@ -1,9 +1,16 @@
 const execa = require('execa');
 const chalk = require('chalk');
+// const dgcard = require('cli.js');
+
+// test('no argument', () => {
+//     expect(() => {
+//         dgcard();
+//     }).toThrow('Required data argument');
+// });
 
 test('dgcard cli with optional', async () => {
     const output = await execa('node', [
-        './src/cli.js',
+        'cli.js',
         '--firstName',
         'First',
         '--lastName',
@@ -42,11 +49,13 @@ test('dgcard cli with optional', async () => {
 
 test('dgcard cli without optional', async () => {
     const output = await execa('node', [
-        './src/cli.js',
+        'cli.js',
         '--firstName',
         'First',
         '--lastName',
         'Last',
+        '--username',
+        'venikman',
         '--email',
         'email@gmail.com',
         '--work',
@@ -56,7 +65,7 @@ test('dgcard cli without optional', async () => {
     expect(actual).toEqual(
         chalk.green(`\n   ╭──────────────────────────────────────╮
    │                                      │
-   │   First Last                         │
+   │   First Last / venikman              │
    │                                      │
    │         Work:  Position at Company   │
    │        Email:  email@gmail.com       │

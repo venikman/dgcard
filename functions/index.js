@@ -11,14 +11,14 @@ exports.addMessage = functions.https.onRequest(async (req, res) => {
     // Grab the text parameter.
     const original = req.query;
 
-    // console.log('[debugging]', req);
     console.log('[debugging]', original);
-    res.send(200);
     // Push the new message into the Realtime Database using the Firebase Admin SDK.
-    // const snapshot = await admin
-    //     .database()
-    //     .ref('/messages')
-    //     .push({ original: original });
+    await admin
+        .database()
+        .ref('/messages')
+        .push({ original: original });
+
+    res.send(200);
     // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
     // res.redirect(303, snapshot.ref.toString());
 });

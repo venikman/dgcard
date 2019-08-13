@@ -1,10 +1,13 @@
 {
     "name": "dgcard",
-    "version": "0.1.2",
+    "version": "0.1.6",
     "description": "API to create JSON represetation for your dgcard",
-    "bin": "src/cli.js",
+    "bin": "cli.js",
+    "files": [
+        "cli.js"
+    ],
     "scripts": {
-        "test": "jest --watchAll"
+        "test": "jest"
     },
     "repository": {
         "type": "git",
@@ -21,16 +24,16 @@
     },
     "homepage": "https://github.com/venikman/dgcard#readme",
     "devDependencies": {
+        "execa": "^2.0.3",
         "jest": "^24.8.0",
+        "firebase": "^6.3.4",
         "prettier": "1.18.2"
     },
     "dependencies": {
         "@hapi/joi": "^15.1.0",
         "boxen": "^4.1.0",
         "chalk": "^2.4.2",
-        "execa": "^2.0.3",
-        "firebase": "^6.3.4",
         "got": "^9.6.0",
-        "yargs-parser": "^13.1.1"
+        "meow": "^5.0.0"
     }
 }
