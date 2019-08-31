@@ -62,10 +62,6 @@ const cli = meow(
             },
             web: {
                 type: 'string'
-            },
-            save: {
-                type: 'boolean',
-                default: false
             }
         }
     }
@@ -92,7 +88,7 @@ async function stas(argss) {
         const searchParams = new URLSearchParams(query);
         try {
             await got(
-                'https://us-central1-dgcard-serveless.cloudfunctions.net/addMessage',
+                `https://us-central1-dgcard-serveless.cloudfunctions.net/addMessage`,
                 { query: searchParams }
             );
         } catch (error) {
