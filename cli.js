@@ -62,10 +62,6 @@ const cli = meow(
             },
             web: {
                 type: 'string'
-            },
-            save: {
-                type: 'boolean',
-                default: false
             }
         }
     }
