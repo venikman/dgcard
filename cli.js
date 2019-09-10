@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const boxen = require('boxen');
-const chalk = require('chalk');
+const chalk = require('chalk'); //
 const got = require('got');
 const joi = require('@hapi/joi');
 const meow = require('meow');
@@ -71,7 +71,7 @@ const cli = meow(
     }
 );
 
-stas(cli.flags)
+main(cli.flags)
     .then(args => {
         console.log(dgcard(args));
     })
@@ -81,7 +81,7 @@ stas(cli.flags)
         }
     });
 
-async function stas(argss) {
+async function main(argss) {
     const args = validate(argss);
     if (args.save) {
         console.log('saving...');
@@ -92,7 +92,7 @@ async function stas(argss) {
         const searchParams = new URLSearchParams(query);
         try {
             await got(
-                'https://us-central1-dgcard-serveless.cloudfunctions.net/addMessage',
+                `https://us-central1-dgcard-serveless.cloudfunctions.net/addMessage`,
                 { query: searchParams }
             );
         } catch (error) {
@@ -151,7 +151,7 @@ function dgcard(args) {
         (linkedining ? newline + linkedining : '') +
         (webing ? newline + webing : '');
 
-    return chalk.green(boxen(output, options));
+    return boxen(output, options);
 }
 
 function validate(option) {

@@ -1,19 +1,12 @@
 const execa = require('execa');
 const chalk = require('chalk');
-// const dgcard = require('cli.js');
-
-// test('no argument', () => {
-//     expect(() => {
-//         dgcard();
-//     }).toThrow('Required data argument');
-// });
 
 test('dgcard cli with optional', async () => {
     const output = await execa('node', [
         'cli.js',
-        '--firstName',
+        '--first-name',
         'First',
-        '--lastName',
+        '--last-name',
         'Last',
         '--email',
         'email@gmail.com',
@@ -31,8 +24,8 @@ test('dgcard cli with optional', async () => {
         'Position at Company'
     ]);
     const actual = output.stdout;
-    expect(actual).toEqual(
-        chalk.green(`\n   ╭──────────────────────────────────────────────────────────────╮
+    expect(actual)
+        .toEqual(`\n   ╭──────────────────────────────────────────────────────────────╮
    │                                                              │
    │   First Last / username                                      │
    │                                                              │
@@ -43,16 +36,15 @@ test('dgcard cli with optional', async () => {
    │     LinkedIn:  https://www.linkedin.com/in/linked_in_path/   │
    │          Web:  https://site.com                              │
    │                                                              │
-   ╰──────────────────────────────────────────────────────────────╯\n`)
-    );
+   ╰──────────────────────────────────────────────────────────────╯\n`);
 });
 
 test('dgcard cli without optional', async () => {
     const output = await execa('node', [
         'cli.js',
-        '--firstName',
+        '--first-name',
         'First',
-        '--lastName',
+        '--last-name',
         'Last',
         '--username',
         'venikman',
@@ -62,14 +54,12 @@ test('dgcard cli without optional', async () => {
         'Position at Company'
     ]);
     const actual = output.stdout;
-    expect(actual).toEqual(
-        chalk.green(`\n   ╭──────────────────────────────────────╮
+    expect(actual).toEqual(`\n   ╭──────────────────────────────────────╮
    │                                      │
    │   First Last / venikman              │
    │                                      │
    │         Work:  Position at Company   │
    │        Email:  email@gmail.com       │
    │                                      │
-   ╰──────────────────────────────────────╯\n`)
-    );
+   ╰──────────────────────────────────────╯\n`);
 });

@@ -1,24 +1,49 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and setup triggers.
-const functions = require('firebase-functions');
-
-// The Firebase Admin SDK to access the Firebase Realtime Database.
+const sgMail = require('@sendgrid/mail');
 const admin = require('firebase-admin');
-admin.initializeApp();
+const functions = require('firebase-functions');
+const stas = functions.config();
 
-// Take the text parameter passed to this HTTP endpoint and insert it into the
-// Realtime Database under the path /messages/:pushId/original
+sgMail.setApiKey(stas.sendgrid.apikey);
+admin.initializeApp(stas.firebase);
+
+const db = admin.firestore();
+
 exports.addMessage = functions.https.onRequest(async (req, res) => {
-    // Grab the text parameter.
-    const original = req.query;
+    const queryParams = req.query;
+    let docRef;
+    try {
+        docRef = await db.collection('pending');
+        const doc = await docRef.add(queryParams);
+        const linkToConfirm = new URLSearchParams([
+            ['id', doc.id],
+            ['email', queryParams.email]
+        ]);
+        const { hostname, protocol } = req;
+        const confirmUrl = `${protocol}://${hostname}/confirmSave?${linkToConfirm}`;
+        const msg = {
+            to: queryParams.email,
+            from: 'no-reply@dgcard.com',
+            subject: 'Confirmation',
+            text: `Visit ${confirmUrl} to confirm your dgcard`,
+            html: `<a href="${confirmUrl}">Confirm your email</a> to save dgcard under your email or ignore this email if you didn't use dgcard tool.`
+        };
+        sgMail.send(msg);
+        res.send(200);
+    } catch (error) {
+        console.log('oops', error);
+        res.send(500);
+    }
+});
 
-    console.log('[debugging]', original);
-    // Push the new message into the Realtime Database using the Firebase Admin SDK.
-    await admin
-        .database()
-        .ref('/messages')
-        .push({ original: original });
-
-    res.send(200);
-    // Redirect with 303 SEE OTHER to the URL of the pushed object in the Firebase console.
-    // res.redirect(303, snapshot.ref.toString());
+exports.confirmSave = functions.https.onRequest(async (req, res) => {
+    const { id, email } = req.query;
+    const validateUserRef = db.collection('pending').doc(id);
+    const validateUser = (await validateUserRef.get()).data();
+    if (validateUser && validateUser.email === email) {
+        const docRef = await db.collection('users').doc(email);
+        await docRef.set(validateUser);
+        await validateUserRef.delete();
+        return res.send(`Confirmed ${JSON.stringify(validateUser, null, 2)}`);
+    }
+    res.send('Failed to Confirm');
 });
