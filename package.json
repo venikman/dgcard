@@ -1,6 +1,6 @@
 {
     "name": "dgcard",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "description": "CLI tool to create digital card for developers",
     "bin": "cli.js",
     "files": [

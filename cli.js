@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const boxen = require('boxen');
-const chalk = require('chalk'); //
 const got = require('got');
 const joi = require('@hapi/joi');
 const meow = require('meow');
@@ -67,7 +66,7 @@ const cli = meow(
     }
 );
 
-main(cli.flags)
+main(cli)
     .then(args => {
         console.log(dgcard(args));
     })
@@ -78,7 +77,20 @@ main(cli.flags)
     });
 
 async function main(argss) {
-    const args = validate(argss);
+    if (argss.input[0]) {
+        let jsonCard;
+        const searchParams = new URLSearchParams([['email', argss.input[0]]]);
+        try {
+            jsonCard = await got(
+                `https://us-central1-dgcard-serveless.cloudfunctions.net/dgcard`,
+                { query: searchParams }
+            );
+        } catch (error) {
+            return console.log('err', error);
+        }
+        return jsonCard;
+    }
+    const args = validate(argss.flags);
     if (args.save) {
         console.log('saving...');
         delete args.save;
