@@ -51,12 +51,42 @@ exports.dgcard = functions.https.onRequest(async (req, res) => {
     const { email } = req.query;
     const docRef = await db.collection('users').doc(email);
     const doc = (await docRef.get()).data();
-    return res.send(doc);
+    res.send(doc);
+});
+
+exports.confirmDelete = functions.https.onRequest(async (req, res) => {
+    const { email, id } = req.query;
+    const docRef = await db.doc(`deletePending/${id}`);
+    const doc = await docRef.get();
+    if (doc.data().email === email) {
+        await db.doc(`users/${email}`).delete();
+        await docRef.delete();
+        return res.send('Deleted');
+    }
+    return res.send('Failed');
 });
 
 exports.delete = functions.https.onRequest(async (req, res) => {
     const { email } = req.query;
-    const docRef = await db.collection('users').doc(email);
-    const doc = (await docRef.get()).data();
-    return res.send(doc);
+    try {
+        const docRef = await db.collection('deletePending');
+        const doc = await docRef.add(req.query);
+        const linkToConfirm = new URLSearchParams([
+            ['id', doc.id],
+            ['email', email]
+        ]);
+        const { hostname, protocol } = req;
+        const confirmUrl = `${protocol}://${hostname}/confirmDelete?${linkToConfirm}`;
+        const msg = {
+            to: email,
+            from: 'no-reply@dgcard.com',
+            subject: 'Confirm delete',
+            text: `Visit ${confirmUrl} to confirm deletion of your dgcard`,
+            html: `<a href="${confirmUrl}">Confirm removing your information</a> to delete dgcard under your email or ignore this email if you didn't use dgcard tool.`
+        };
+        sgMail.send(msg);
+        res.send(200);
+    } catch (error) {
+        res.send(500);
+    }
 });

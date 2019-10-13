@@ -1,6 +1,6 @@
 {
     "name": "dgcard",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "CLI tool to create digital card for developers",
     "bin": "cli.js",
     "files": [
@@ -8,6 +8,7 @@
     ],
     "scripts": {
         "deploy": "gcloud functions deploy addMessage --trigger-http",
+        "pub": "np patch",
         "test": "jest"
     },
     "repository": {
@@ -25,14 +26,14 @@
     },
     "homepage": "https://github.com/venikman/dgcard#readme",
     "devDependencies": {
-        "execa": "^2.0.3",
-        "jest": "^24.8.0",
         "firebase": "^6.3.4",
+        "jest": "^24.8.0",
         "prettier": "1.18.2"
     },
     "dependencies": {
         "@hapi/joi": "^15.1.0",
         "boxen": "^4.1.0",
+        "execa": "^2.0.4",
         "got": "^9.6.0",
         "meow": "^5.0.0"
     }

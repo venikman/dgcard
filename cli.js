@@ -61,6 +61,9 @@ const cli = meow(
             },
             web: {
                 type: 'string'
+            },
+            save: {
+                type: 'boolean'
             }
         }
     }
@@ -78,8 +81,19 @@ main(cli)
 
 async function main(argss) {
     if (argss.input[0]) {
-        let jsonCard;
         const searchParams = new URLSearchParams([['email', argss.input[0]]]);
+        if (argss.flags.delete) {
+            try {
+                await got(
+                    `https://us-central1-dgcard-serveless.cloudfunctions.net/delete`,
+                    { query: searchParams }
+                );
+            } catch (error) {
+                return console.log('err', error);
+            }
+            return 'Email sent';
+        }
+        let jsonCard;
         try {
             jsonCard = await got(
                 `https://us-central1-dgcard-serveless.cloudfunctions.net/dgcard`,
@@ -88,7 +102,7 @@ async function main(argss) {
         } catch (error) {
             return console.log('err', error);
         }
-        return jsonCard;
+        return JSON.parse(jsonCard.body);
     }
     const args = validate(argss.flags);
     if (args.save) {
@@ -110,7 +124,8 @@ async function main(argss) {
     return args;
 }
 
-function dgcard(args) {
+function dgcard(stas) {
+    if (typeof stas === 'string') return stas;
     const options = {
         padding: 1,
         margin: 1,
@@ -118,14 +133,14 @@ function dgcard(args) {
     };
 
     const data = {
-        name: `${args.firstName} ${args.lastName}`,
-        email: args.email,
-        username: `/ ${args.username}`,
-        work: args.work,
-        twitter: args.twitter,
-        github: args.github,
-        linkedin: args.linkedin,
-        web: args.web,
+        name: `${stas.firstName} ${stas.lastName}`,
+        email: stas.email,
+        username: `/ ${stas.username}`,
+        work: stas.work,
+        twitter: stas.twitter,
+        github: stas.github,
+        linkedin: stas.linkedin,
+        web: stas.web,
         labelWork: '      Work:',
         labelEmail: '     Email:',
         labelTwitter: '   Twitter:',
@@ -135,7 +150,7 @@ function dgcard(args) {
     };
 
     const newline = '\n';
-    const heading = `${data.name} ${args.username ? data.username : ''}`;
+    const heading = `${data.name} ${stas.username ? data.username : ''}`;
     const working = `${data.labelWork}  ${data.work}`;
     const emailing = `${data.labelEmail}  ${data.email}`;
     const twittering = data.twitter
@@ -158,7 +173,6 @@ function dgcard(args) {
         (githubing ? newline + githubing : '') +
         (linkedining ? newline + linkedining : '') +
         (webing ? newline + webing : '');
-
     return boxen(output, options);
 }
 
@@ -204,7 +218,10 @@ function validate(option) {
                 linkedin: socialUrl,
                 web: socialUrl,
                 email: str.required().email(),
-                save: joi.boolean().required()
+                save: joi
+                    .boolean()
+                    .optional()
+                    .default(false)
             })
     );
 
