@@ -8,7 +8,7 @@ const meow = require('meow');
 const cli = meow(
     `
 	Usage
-	  $ djcard <input>
+	  $ djcard <input> || <email>
 
 	Options
 	  --first-name, Include a first name [required]
@@ -19,7 +19,9 @@ const cli = meow(
 	  --twitter, Include your twitter
 	  --linkedin, Include your linkedIn page
 	  --github, Include your github page
-	  --web, Include your web page
+      --web, Include your web page
+      --save, will sent to you request to save via email
+      --delete, request to delete you profile from db
 
 	Examples
       $ dgcard --first-name Stas --last-name Nedb --work humana --username venikman --email nedb@gmail.com
